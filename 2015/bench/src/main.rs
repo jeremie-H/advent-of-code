@@ -5,7 +5,7 @@ use util::common::*;
 use took::{Timer, Took};
 use itertools::Itertools;
 
-const RUNS: usize = 20;
+const RUNS: usize = 200;
 
 #[rustfmt::skip]
 fn main() {

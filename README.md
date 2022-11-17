@@ -44,3 +44,8 @@ cargo test --workspace
 ```shell
 cargo clippy --all
 ```
+
+### How to format code with the nightly edition
+```shell
+cargo +nightly fmt
+```

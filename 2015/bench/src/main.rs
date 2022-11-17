@@ -82,7 +82,7 @@ fn main() {
         }
     }
 
-    println!("| total |-----------|{: >10} |", Took::from_std(duree_totale));
+    println!("| total |           |{: >10}|", format!("**{}**",Took::from_std(duree_totale)));
 
 }
 

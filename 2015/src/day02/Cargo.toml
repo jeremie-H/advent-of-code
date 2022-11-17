@@ -5,3 +5,4 @@ edition = "2021"
 
 [dependencies]
 util = { path = "../util" }
+itertools = "0.10.3"

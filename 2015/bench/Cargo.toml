@@ -1,0 +1,36 @@
+[package]
+name = "bench"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+util = { path = "../src/util" }
+took = "0.1"
+itertools = "0.10.3"
+day01 = { path = "../src/day01" }
+day02 = { path = "../src/day02" }
+day03 = { path = "../src/day03" }
+day04 = { path = "../src/day04" }
+day05 = { path = "../src/day05" }
+day06 = { path = "../src/day06" }
+day07 = { path = "../src/day07" }
+day08 = { path = "../src/day08" }
+day09 = { path = "../src/day09" }
+day10 = { path = "../src/day10" }
+day11 = { path = "../src/day11" }
+day12 = { path = "../src/day12" }
+day13 = { path = "../src/day13" }
+day14 = { path = "../src/day14" }
+day15 = { path = "../src/day15" }
+day16 = { path = "../src/day16" }
+day17 = { path = "../src/day17" }
+day18 = { path = "../src/day18" }
+day19 = { path = "../src/day19" }
+day20 = { path = "../src/day20" }
+day21 = { path = "../src/day21" }
+day22 = { path = "../src/day22" }
+day23 = { path = "../src/day23" }
+day24 = { path = "../src/day24" }
+day25 = { path = "../src/day25" }
+
+[workspace]

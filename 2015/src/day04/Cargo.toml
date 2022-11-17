@@ -1,0 +1,8 @@
+[package]
+name = "day04"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+util = { path = "../util" }
+array2d = "0.2.1"

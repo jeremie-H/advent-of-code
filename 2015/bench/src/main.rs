@@ -5,7 +5,7 @@ use util::common::*;
 use took::{Timer, Took};
 use itertools::Itertools;
 
-const RUNS: usize = 200;
+const RUNS: usize = 5;
 
 #[rustfmt::skip]
 fn main() {
@@ -82,7 +82,7 @@ fn main() {
         }
     }
 
-    println!("| total |           |{: >10}|", format!("**{}**",Took::from_std(duree_totale)));
+    println!("| total |           |{: >10} |", format!("**{}**",Took::from_std(duree_totale)));
 
 }
 

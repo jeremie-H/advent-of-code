@@ -5,4 +5,4 @@ edition = "2021"
 
 [dependencies]
 util = { path = "../util" }
-array2d = "0.2.1"
+md-5 = {version="0.10.5", features = ["asm"] }

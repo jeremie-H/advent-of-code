@@ -1,8 +1,0 @@
-[package]
-name = "day15"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]
-util = { path = "../util" }
-colored = "2"

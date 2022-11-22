@@ -4,28 +4,37 @@ _First of all, navigate into one year directory, like : `2015/`_
 _Then use one of these command_
 
 ## Quickstart
+### How to execute all days 🚀
+```shell
+cargo aoc
+```
+
 ### How to bench all days 🚀
 ```shell
-cargo run --manifest-path bench/Cargo.toml --release
+cargo aoc-bench
 ```
 
 ### How to test with live reload for one day 👀
+_For example, live reload on day01_
+
 ```shell
-cargo-watch -x "test -p day<X> -- --nocapture"
+cargo-watch -x "aoc-test day01"
 ```
+
+You need as a requirement to install `cargo-watch` with the following command :
+```
+cargo install cargo-watch
+```
+
 ---
 
 ## Helping commands
 _for helping, there are some more commands here, if needed_  
 
-### How to initialize a new day
-```shell
-cargo new --lib src/day24
-```
 
 ### How to run test on a specific day
 ```shell
-cargo test -p day12
+cargo aoc-test day12
 ```
 
 

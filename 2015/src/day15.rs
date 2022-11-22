@@ -1,19 +1,14 @@
-
-use std::{error::Error};
+use std::error::Error;
 
 /**
  * Part 1
  */
-pub fn part1(_input: &str) -> Result<i64, Box<dyn Error>> {
-    Ok(0)
-}
+pub fn part1(_input: &str) -> Result<i64, Box<dyn Error>> { Ok(0) }
 
 /**
  * Part 2
  */
-pub fn part2(_input: &str) -> Result<i64, Box<dyn Error>> {
-    Ok(0)
-}
+pub fn part2(_input: &str) -> Result<i64, Box<dyn Error>> { Ok(0) }
 
 #[cfg(test)]
 mod tests {

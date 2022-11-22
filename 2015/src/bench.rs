@@ -1,11 +1,11 @@
-use std::{time::Duration, error::Error};
+use std::{error::Error, time::Duration};
 
-use adventofcode::{common::*};
+use adventofcode::common::*;
 use colored::*;
-use took::{Timer, Took};
 use itertools::Itertools;
+use took::{Timer, Took};
 
-const RUNS: usize = 5;
+const RUNS: usize = 1;
 
 #[rustfmt::skip]
 fn main() {
@@ -65,10 +65,9 @@ pub trait ArrayDisplay {
 }
 
 impl ArrayDisplay for Took {
-    
     fn affiche_deux_parts(&self, deuxieme: &Took, description: &str) {
         //| day01 |  83.32 μs |  97.22 μs |
-        println!("| {} |{: >10} |{: >10} |", description, self, deuxieme );
+        println!("| {} |{: >10} |{: >10} |", description, self, deuxieme);
     }
 
     fn affiche_part1(&self, description: &str) {

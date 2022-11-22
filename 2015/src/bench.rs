@@ -9,7 +9,7 @@ const RUNS: usize = 1;
 
 #[rustfmt::skip]
 fn main() {
-    println!("Benchmark tous les jours AOC avec {} runs...", format!("{}", RUNS).green().bold());
+    println!("Benchmarking all AOC days with {} runs...", format!("{}", RUNS).green().bold());
     
     let times: Vec<_> = alldays()
         .iter()
@@ -38,7 +38,7 @@ fn main() {
         .collect();
 
     let mut duree_totale: Duration = Duration::ZERO;
-    println!("## Résultat des benchs");
+    println!("## Benches results");
     println!("| day   |   part 1  |   part 2  | \n|-------|----------:|----------:|");
     
     //check si le jour est terminé et si oui alors on affiche les 2 parts et on ajoute à la durée totale

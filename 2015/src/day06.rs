@@ -3,7 +3,12 @@ use std::error::Error;
 /**
  * Part 1
  */
-pub fn part1(_input: &str) -> Result<i64, Box<dyn Error>> { Ok(0) }
+pub fn part1(input: &str) -> Result<i64, Box<dyn Error>> {
+    input.lines().for_each(|l| {
+        println!("l : {}",l);
+    });
+    Ok(0)
+}
 
 /**
  * Part 2
@@ -16,13 +21,14 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        // avec les données d'essai de la partie 1
-        assert_eq!(part1("").unwrap(), 0);
+        let input =r"turn on 0,0 through 999,999
+toggle 0,0 through 999,0
+turn off 499,499 through 500,500";
+        assert_eq!(part1(input).unwrap(), 998996);
     }
 
     #[test]
     fn test_part2() {
-        // avec les données d'essai de la partie 2
         assert_eq!(part2("").unwrap(), 0);
     }
 

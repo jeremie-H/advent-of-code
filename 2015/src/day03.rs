@@ -59,7 +59,6 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        // avec les données d'essai
         assert_eq!(part1(">").unwrap(), 2);
         assert_eq!(part1("^>v<").unwrap(), 4);
         assert_eq!(part1("^v^v^v^v^v").unwrap(), 2);
@@ -67,7 +66,6 @@ mod tests {
 
     #[test]
     fn test_part2() {
-        // avec les données d'essai
         assert_eq!(part2("^v").unwrap(), 3);
         assert_eq!(part2("^>v<").unwrap(), 3);
         assert_eq!(part2("^v^v^v^v^v").unwrap(), 11);

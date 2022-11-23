@@ -64,7 +64,6 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        // avec les données d'essai de la partie 1
         assert_eq!(
             part1("ugknbfddgicrmopn\naaa\njchzalrnumimnmhp\nhaegwjzuvuyypxyu\ndvszwmarrgswjxmb").unwrap(),
             2
@@ -73,7 +72,6 @@ mod tests {
 
     #[test]
     fn test_part2() {
-        // avec les données d'essai de la partie 2
         assert_eq!(part2("qjhvhtzxzqqjkmpb\nxxyxx\nuurcxstgmygtbstg\nieodomkazucvgmuy").unwrap(), 2);
     }
 

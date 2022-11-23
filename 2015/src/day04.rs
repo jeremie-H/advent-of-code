@@ -54,14 +54,12 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        // avec les données d'essai
         assert_eq!(part1("abcdef").unwrap(), 609043);
         // assert_eq!(part1("pqrstuv").unwrap(), 1048970);
     }
 
     #[test]
     fn test_part2() {
-        // avec les données d'essai
         //assert_eq!(part2("").unwrap(), 0);
     }
 

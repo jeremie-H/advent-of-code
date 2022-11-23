@@ -49,13 +49,11 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        // avec les données d'essai
         assert_eq!(part1("2x3x4\n1x1x10").unwrap(), 101);
     }
 
     #[test]
     fn test_part2() {
-        // avec les données d'essai
         assert_eq!(part2("2x3x4\n1x1x10").unwrap(), 14 + 34);
     }
 

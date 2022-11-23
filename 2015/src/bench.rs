@@ -17,8 +17,7 @@ fn main() {
         .map(|(i,j)| {
             display_msg_head(i+1);
             let resultat=((j.0 as fn(input: &str) -> Result<i64, Box<dyn Error>>)(j.1)).unwrap_or_default();
-            display_msg_result(resultat);
-            (
+            let tuple_duration_result = (
                 (0..RUNS)
                     .map(|_| {
                         let took = Timer::new();
@@ -33,7 +32,9 @@ fn main() {
                     .unwrap(),
                 //retourne le résultat de la fonction, pour savoir si !=0 alors on pourra afficher le résultat
                 resultat,
-            )
+            );
+            display_msg_result(resultat);
+            tuple_duration_result
         })
         .collect();
 

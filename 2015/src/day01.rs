@@ -43,7 +43,6 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        // avec les données d'essai
         assert_eq!(part1("(()(()(").unwrap(), 3);
         assert_eq!(part1("))(((((").unwrap(), 3);
         assert_eq!(part1(")())())").unwrap(), -3);
@@ -51,7 +50,6 @@ mod tests {
 
     #[test]
     fn test_part2() {
-        // avec les données d'essai
         assert_eq!(part2(")").unwrap(), 1);
         assert_eq!(part2("()())").unwrap(), 5);
     }

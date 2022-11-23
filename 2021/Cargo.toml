@@ -1,0 +1,33 @@
+[package]
+name = "adventofcode"
+version = "0.1.0"
+edition = "2021"
+default-run = "adventofcode"
+
+[[bin]]
+name = "adventofcode"
+path = "src/main.rs"
+
+[[bin]]
+name = "bench"
+path = "src/bench.rs"
+
+[profile.release]
+strip = "debuginfo"
+lto = true
+codegen-units = 1
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+itertools = "0.10.3"
+# common.rs
+colored = "2"
+#bench.rs
+took = "0.1"
+
+# day04
+array2d = "0.2.1"
+
+#day21
+cached = "0.40.0"

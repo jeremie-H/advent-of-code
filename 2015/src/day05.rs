@@ -42,17 +42,19 @@ pub fn part2(input: &str) -> Result<i64, Box<dyn Error>> {
         let mut atleast_oneletter = false;
         let mut previous = '-';
         let mut s = String::with_capacity(2);
-        for (c1,c2) in l.chars().tuple_windows() {
+        for (c1, c2) in l.chars().tuple_windows() {
             s.push(c1);
             s.push(c2);
-            pair |= l.match_indices(&s).collect::<Vec<_>>().len() > 1;
+            pair |= l.match_indices(&s).count() > 1;
             s.clear();
             //println!("({},{}) pair = {}, cc={:?}",c1,c2,pair,cc);
             if c2 == previous {
-                atleast_oneletter=true;
+                atleast_oneletter = true;
             }
-            if pair && atleast_oneletter { return acc + 1}
-            previous=c1;
+            if pair && atleast_oneletter {
+                return acc + 1;
+            }
+            previous = c1;
         }
         acc
     }))

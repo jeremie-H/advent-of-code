@@ -26,3 +26,6 @@ took = "0.1"
 
 # day04
 md-5 = {version="0.10.5", features = ["asm"] }
+
+# day07
+regex = "1.7.0"

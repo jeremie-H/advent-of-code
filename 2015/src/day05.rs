@@ -66,10 +66,7 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        assert_eq!(
-            part1("ugknbfddgicrmopn\naaa\njchzalrnumimnmhp\nhaegwjzuvuyypxyu\ndvszwmarrgswjxmb").unwrap(),
-            2
-        );
+        assert_eq!(part1("ugknbfddgicrmopn\naaa\njchzalrnumimnmhp\nhaegwjzuvuyypxyu\ndvszwmarrgswjxmb").unwrap(), 2);
     }
 
     #[test]

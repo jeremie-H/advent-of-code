@@ -7,10 +7,7 @@ use std::error::Error;
 #[allow(clippy::needless_range_loop)] //les boucles proposées par clippy sont illisibles
 pub fn part1(input: &str) -> Result<i64, Box<dyn Error>> {
     let instructions = read_instructions(input);
-    let instructions = instructions
-        .iter()
-        .map(|(i, c1, c2)| Grid::from_str(i, c1, c2))
-        .collect::<Vec<Grid>>();
+    let instructions = instructions.iter().map(|(i, c1, c2)| Grid::from_str(i, c1, c2)).collect::<Vec<Grid>>();
 
     let mut grille: [[bool; 1000]; 1000] = [[false; 1000]; 1000];
     for k in &instructions {
@@ -25,9 +22,9 @@ pub fn part1(input: &str) -> Result<i64, Box<dyn Error>> {
             }
         }
     }
-    let count = grille.iter().fold(0, |compteur, ligne| {
-        compteur + ligne.iter().fold(0, |acc, state| if *state { acc + 1 } else { acc })
-    });
+    let count = grille
+        .iter()
+        .fold(0, |compteur, ligne| compteur + ligne.iter().fold(0, |acc, state| if *state { acc + 1 } else { acc }));
 
     Ok(count)
 }
@@ -52,10 +49,7 @@ fn read_instructions(input: &str) -> Vec<(&str, &str, &str)> {
 #[allow(clippy::needless_range_loop)] //les boucles proposées par clippy sont illisibles
 pub fn part2(input: &str) -> Result<i64, Box<dyn Error>> {
     let instructions = read_instructions(input);
-    let instructions = instructions
-        .iter()
-        .map(|(i, c1, c2)| Grid::from_str(i, c1, c2))
-        .collect::<Vec<Grid>>();
+    let instructions = instructions.iter().map(|(i, c1, c2)| Grid::from_str(i, c1, c2)).collect::<Vec<Grid>>();
 
     let mut grille: [[i8; 1000]; 1000] = [[0i8; 1000]; 1000];
     for k in &instructions {
@@ -76,9 +70,7 @@ pub fn part2(input: &str) -> Result<i64, Box<dyn Error>> {
             }
         }
     }
-    let count = grille.iter().fold(0, |compteur, ligne| {
-        compteur + ligne.iter().fold(0, |acc, state| acc + (*state as i64))
-    });
+    let count = grille.iter().fold(0, |compteur, ligne| compteur + ligne.iter().fold(0, |acc, state| acc + (*state as i64)));
 
     Ok(count)
 }

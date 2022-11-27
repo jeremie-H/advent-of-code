@@ -2,4 +2,4 @@ brace_style = "PreferSameLine"
 fn_single_line = true
 control_brace_style = "AlwaysSameLine"
 reorder_imports = true
-max_width = 140
+max_width = 180

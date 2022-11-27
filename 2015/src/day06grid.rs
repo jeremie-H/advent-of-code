@@ -59,10 +59,6 @@ impl std::fmt::Debug for Grid {
         //     "([{}:{}] a={},{}, b={},{})",
         //     self.surface, self.state, self.corner_a.0, self.corner_a.1, self.corner_b.0, self.corner_b.1,
         // )
-        write!(
-            f,
-            "([{}] a={},{}, b={},{})",
-            self.state, self.corner_a.0, self.corner_a.1, self.corner_b.0, self.corner_b.1,
-        )
+        write!(f, "([{}] a={},{}, b={},{})", self.state, self.corner_a.0, self.corner_a.1, self.corner_b.0, self.corner_b.1,)
     }
 }

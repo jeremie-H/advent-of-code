@@ -1,6 +1,6 @@
 # Advent of code
 
-_First of all, navigate into one year directory, like : `2015/`_  
+_First of all, navigate into one year directory, like : `cd 2022/`_  
 _Then use one of these command_
 
 ## Quickstart

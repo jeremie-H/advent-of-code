@@ -20,11 +20,12 @@ codegen-units = 1
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-itertools = "0.10.3"
+itertools = "0.10"
 # common.rs
 colored = "2"
 #bench.rs
 took = "0.1"
+
 
 # day04
 array2d = "0.2.1"

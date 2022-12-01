@@ -2,6 +2,3 @@
 aoc = ["run", "--release"]
 aoc-bench = ["run", "--bin", "bench", "--release"]
 aoc-test = ["test", "\"command list\"", "--", "--nocapture"] # for example "cargo aoc-test day01"
-
-[build]
-rustflags = ["-C", "target-cpu=native"]

@@ -14,6 +14,8 @@ path = "src/bench.rs"
 
 [profile.release]
 strip = "debuginfo"
+#lto = true
+#codegen-units = 1
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -23,10 +25,3 @@ itertools = "0.10"
 colored = "2"
 #bench.rs
 took = "0.1"
-
-
-# day04
-md-5 = {version="0.10.5", features = ["asm"] }
-
-# day07
-regex = "1.7.0"

@@ -3,4 +3,4 @@ fn_single_line = true
 control_brace_style = "AlwaysSameLine"
 reorder_imports = true
 attr_fn_like_width=100
-max_width=180
+max_width=160

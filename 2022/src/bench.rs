@@ -5,7 +5,7 @@ use colored::*;
 use itertools::Itertools;
 use took::{Timer, Took};
 
-const RUNS: usize = 500;
+const RUNS: usize = 2000;
 
 #[rustfmt::skip]
 fn main() {

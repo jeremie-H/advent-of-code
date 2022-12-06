@@ -1,4 +1,4 @@
-use std::{error::Error, str::{self}};
+use std::{error::Error, str::{self}, thread, time::Duration};
 
 use itertools::Itertools;
 
@@ -72,10 +72,41 @@ fn crates_mover(input: &str, crates: &mut [Vec<u8>], is9001: bool) -> Result<(),
         }
         if is9001 { grue.reverse(); }
         crates[to].append(&mut grue);
+        //display_and_reset_screen(crates, ligne);
     };
     Ok(())
 }
 
+/**
+ * Fonction uniquement pour s'amuser et regarder s'animer le tableau
+ */
+#[allow(dead_code,clippy::needless_range_loop)]
+fn display_and_reset_screen(crates: &mut [Vec<u8>], mvt: &str) {
+    println!("\x1b  \x1b[A");//clear screeen
+    let hauteurmax = crates.iter().map(|c|c.len()).max().unwrap();
+    let largeur = crates.len();
+    let mut affichage = vec![String::new();hauteurmax];
+    // println!("high   : {}", hauteurmax);
+    // println!("length : {}", largeur);
+    for i in 0..hauteurmax {
+        for j in 0..largeur {
+            if let Some(case) = crates[j].get(i) {
+            affichage[hauteurmax-1-i].push_str(format!("[{}] ",*case as char).as_str());
+            } else {
+                affichage[hauteurmax-1-i].push_str("[ ] ");
+            }
+            
+        }
+    }
+    
+    for l in affichage{
+        println!("{}",l);
+    }
+    println!("==========");
+    println!("{}",mvt);
+    thread::sleep(Duration::from_millis(20));
+    
+}
 
 #[cfg(test)]
 mod tests {

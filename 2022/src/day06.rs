@@ -4,26 +4,20 @@ use std::error::Error;
  * Part 1
  */
 pub fn part1(input: &str) -> Result<i64, Box<dyn Error>> {
-    Ok(input.as_bytes().windows(4)
-    .position(|s| s[0]!= s[1] && s[1] != s[2] && s[2] != s[3] && s[0] != s[2] && s[0]!= s[3] && s[1] != s[3])
-    .unwrap() as i64 + 4)
+    Ok(pos(input, 4))
 }
 
 /**
  * Part 2
  */
 pub fn part2(input: &str) -> Result<i64, Box<dyn Error>> {
-    Ok(input.as_bytes().windows(14)
-    .position(|s| {
-        for i in 0..s.len()-1 {
-            for j in i+1..s.len() {
-                if s[i]==s[j] { return false; }
-            }
-        };
-        true
-    })
-    .unwrap() as i64 + 14)
+    Ok(pos(input, 14))
 }
+
+fn pos(input: &str, n: usize) -> i64 {
+    (input.as_bytes().windows(n).position(|s| (1..s.len()).all(|i| !s[i..].contains(&s[i - 1]))).unwrap() + n) as i64 
+}
+
 
 #[cfg(test)]
 mod tests {

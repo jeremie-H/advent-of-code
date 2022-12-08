@@ -82,7 +82,7 @@ fn crates_mover(input: &str, crates: &mut [Vec<u8>], is9001: bool) -> Result<(),
  */
 #[allow(dead_code,clippy::needless_range_loop)]
 fn display_and_reset_screen(crates: &mut [Vec<u8>], mvt: &str) {
-    println!("\x1b  \x1b[A");//clear screeen
+    println!("\x1b[1J\x1b[A");//clear screeen
     let hauteurmax = crates.iter().map(|c|c.len()).max().unwrap();
     let largeur = crates.len();
     let mut affichage = vec![String::new();hauteurmax];

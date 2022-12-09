@@ -7,18 +7,7 @@ const DIR:[(i32,i32);4]=[(1,0),(0,-1),(-1,0),(0,1)];
  * Part 1
  */
 pub fn part1(input: &str) -> Result<i64, Box<dyn Error>> {
-    let moves = input.lines()
-    .map(|l|l.split_once(' ').unwrap())
-    .map(|(d,n)| (d.chars().next().unwrap(), n.parse::<i32>().unwrap()))
-    .map(|(d,n)| (match d {
-        'U' => 0,
-        'L' => 1,
-        'D' => 2,
-        'R' => 3,
-        _ => panic!("hey !")
-    },n))
-    .collect::<Vec<(usize,i32)>>();
-
+    let moves = read_moves(input);
     let mut positions = HashSet::new();
     positions.insert((0,0));
     let mut head: (i32,i32)=(0,0);
@@ -35,8 +24,34 @@ pub fn part1(input: &str) -> Result<i64, Box<dyn Error>> {
     Ok(positions.len() as i64)
 }
 
+/**
+ * Part 2
+ */
+pub fn part2(input: &str) -> Result<i64, Box<dyn Error>> {
+    let moves = read_moves(input);
+
+    let mut positions = HashSet::new();
+    positions.insert((0,0));//always at least this position
+    let mut alaqueueleuleu = [(0,0);10];
+
+    moves.iter().for_each(|(d,n)|{
+        for _ in 0..*n {
+            alaqueueleuleu[0] = (alaqueueleuleu[0].0+DIR[*d].0, alaqueueleuleu[0].1+DIR[*d].1);
+            for i in 1..alaqueueleuleu.len() {
+                alaqueueleuleu[i] = calcul_new_tail(alaqueueleuleu[i-1], alaqueueleuleu[i]);
+            }
+            positions.insert(alaqueueleuleu[alaqueueleuleu.len()-1]);
+        }
+    });
+
+    Ok(positions.len() as i64)
+}
+
+/**
+ * évalue toutes les différentes positions possibles
+ */
 fn calcul_new_tail(head: (i32, i32), tail: (i32, i32)) -> (i32, i32) {
-    match (head.0-tail.0,head.1-tail.1){
+    match (head.0-tail.0,head.1-tail.1) {
         (0,0) | (1,0) | (0,1) | (1,1) | (-1,0) | (0,-1) | (-1,-1) | (1,-1) | (-1,1) => tail,
         (0,2) => (tail.0,tail.1+1),
         (2,0) => (tail.0+1,tail.1),
@@ -51,54 +66,14 @@ fn calcul_new_tail(head: (i32, i32), tail: (i32, i32)) -> (i32, i32) {
         (-2,-2) => (tail.0-1,tail.1-1),
         (-2,2) => (tail.0-1,tail.1+1),
         (a,b) => panic!("pas possible avec ({},{})",a,b)
-
     }
-}
-
-/**
- * Part 2
- */
-pub fn part2(input: &str) -> Result<i64, Box<dyn Error>> {
-    let moves = read_moves(input);
-
-    let mut positions = HashSet::new();
-    positions.insert((0,0));//always at least this position
-    
-    let mut head: (i32,i32)=(0,0);
-    let mut tail1: (i32,i32)=(0,0);
-    let mut tail2: (i32,i32)=(0,0);
-    let mut tail3: (i32,i32)=(0,0);
-    let mut tail4: (i32,i32)=(0,0);
-    let mut tail5: (i32,i32)=(0,0);
-    let mut tail6: (i32,i32)=(0,0);
-    let mut tail7: (i32,i32)=(0,0);
-    let mut tail8: (i32,i32)=(0,0);
-    let mut tail9: (i32,i32)=(0,0);
-
-    moves.iter().for_each(|(d,n)|{
-        for _ in 0..*n {
-            head = (head.0+DIR[*d].0, head.1+DIR[*d].1);
-            tail1 = calcul_new_tail(head,tail1);
-            tail2 = calcul_new_tail(tail1,tail2);
-            tail3 = calcul_new_tail(tail2,tail3);
-            tail4 = calcul_new_tail(tail3,tail4);
-            tail5 = calcul_new_tail(tail4,tail5);
-            tail6 = calcul_new_tail(tail5,tail6);
-            tail7 = calcul_new_tail(tail6,tail7);
-            tail8 = calcul_new_tail(tail7,tail8);
-            tail9 = calcul_new_tail(tail8,tail9);
-            positions.insert(tail9);
-        }
-    });
-
-    Ok(positions.len() as i64)
 }
 
 fn read_moves(input: &str) -> Vec<(usize, i32)> {
     input.lines()
     .map(|l|l.split_once(' ').unwrap())
     .map(|(d,n)| (d.chars().next().unwrap(), n.parse::<i32>().unwrap()))
-    .map(|(d,n)| (match d {
+    .map(|(d,n)| (match d {//on map les directions pour que ce soit facile de taper sur les indices de DIR
         'U' => 0,
         'L' => 1,
         'D' => 2,
@@ -112,14 +87,7 @@ fn read_moves(input: &str) -> Vec<(usize, i32)> {
 mod tests {
     use super::*;
 
-    const ÉNONCÉ: &str = "R 4
-U 4
-L 3
-D 1
-R 4
-D 1
-L 5
-R 2";
+    const ÉNONCÉ: &str = "R 4\nU 4\nL 3\nD 1\nR 4\nD 1\nL 5\nR 2";
 
     #[test]
     fn test_part1() {

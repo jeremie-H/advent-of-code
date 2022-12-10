@@ -1,8 +1,11 @@
 use std::error::Error;
 
+//const DIR: [(i8,i8);4] = [(0,1),(1,0),(0,-1),(-1,0)];
+
 /**
  * Part 1
  */
+#[allow(clippy::needless_range_loop)]
 pub fn part1(input: &str) -> Result<i64, Box<dyn Error>> {
     let foret = input.lines()
         .map(|l| l.bytes().map(|c| c-b'0').collect::<Vec<u8>>())
@@ -83,33 +86,50 @@ pub fn part2(input: &str) -> Result<i64, Box<dyn Error>> {
     Ok(highest as i64)
 }
 
+#[allow(clippy::ptr_arg, clippy::needless_range_loop)]
 fn calcul_score(foret: &Vec<Vec<u8>>, i: usize, j: usize, taille: usize) -> i64 {
     let mut score:i64 = 1;
+    
+    let pivot = foret[i as usize][j as usize];
+    //let (mut m, mut k):(i8,i8);
+    //let taille = taille as i8;
+    // for dir in  DIR {
+    //     let mut acc:i64=0;
+    //     (m, k) = (i, j);
+    //     loop {
+    //         (m,k) = (dir.0 + m, dir.1 + k);
+    //         acc+=1;
+    //         if m < 1 || k < 1 || m > taille-2 || k > taille-2 || foret[m as usize][k as usize] >= pivot { break; }
+    //     }
+    //     score *= acc;
+    // };
+    // score
+
     let mut trace:i64 = 0;
     for k in (0..i).rev() {
         trace+=1;
-        if foret[k][j] >= foret[i][j]{ break; }
+        if foret[k][j] >= pivot{ break; }
     }
     score *= trace;
 
     trace = 0;
     for k in i+1..taille {
         trace+=1;
-        if foret[k][j] >= foret[i][j] { break; }
+        if foret[k][j] >= pivot { break; }
     }
     score *= trace;
 
     trace = 0;
     for m in (0..j).rev() {
         trace+=1;
-        if foret[i][m] >= foret[i][j] { break; }
+        if foret[i][m] >= pivot { break; }
     }
     score *= trace;
 
     trace = 0;
     for m in j+1..taille {
         trace+=1;
-        if foret[i][m] >= foret[i][j] { break; }
+        if foret[i][m] >= pivot { break; }
     }
     score *= trace;
     score

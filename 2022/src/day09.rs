@@ -1,7 +1,7 @@
 use std::{error::Error, collections::HashSet};
 
-//ULDR
-const DIR:[(i32,i32);4]=[(1,0),(0,-1),(-1,0),(0,1)];
+//Up / Left / Down / Right
+const DIR:[(i16,i16);4]=[(1,0),(0,-1),(-1,0),(0,1)];
 
 /**
  * Part 1
@@ -10,13 +10,13 @@ pub fn part1(input: &str) -> Result<i64, Box<dyn Error>> {
     let moves = read_moves(input);
     let mut positions = HashSet::new();
     positions.insert((0,0));
-    let mut head: (i32,i32)=(0,0);
-    let mut tail: (i32,i32)=(0,0);
+    let mut head = (0i16,0i16);
+    let mut tail = (0i16,0i16);
 
     moves.iter().for_each(|(d,n)|{
         for _ in 0..*n {
             head = (head.0+DIR[*d].0, head.1+DIR[*d].1);
-            tail = calcul_new_tail(head,tail);
+            calcul_new_tail(head,&mut tail);
             positions.insert(tail);
         }
     });
@@ -38,7 +38,7 @@ pub fn part2(input: &str) -> Result<i64, Box<dyn Error>> {
         for _ in 0..*n {
             alaqueueleuleu[0] = (alaqueueleuleu[0].0+DIR[*d].0, alaqueueleuleu[0].1+DIR[*d].1);
             for i in 1..alaqueueleuleu.len() {
-                alaqueueleuleu[i] = calcul_new_tail(alaqueueleuleu[i-1], alaqueueleuleu[i]);
+                calcul_new_tail(alaqueueleuleu[i-1], &mut alaqueueleuleu[i]);
             }
             positions.insert(alaqueueleuleu[alaqueueleuleu.len()-1]);
         }
@@ -50,29 +50,20 @@ pub fn part2(input: &str) -> Result<i64, Box<dyn Error>> {
 /**
  * évalue toutes les différentes positions possibles
  */
-fn calcul_new_tail(head: (i32, i32), tail: (i32, i32)) -> (i32, i32) {
-    match (head.0-tail.0,head.1-tail.1) {
-        (0,0) | (1,0) | (0,1) | (1,1) | (-1,0) | (0,-1) | (-1,-1) | (1,-1) | (-1,1) => tail,
-        (0,2) => (tail.0,tail.1+1),
-        (2,0) => (tail.0+1,tail.1),
-        (0,-2) => (tail.0,tail.1-1),
-        (-2,0) => (tail.0-1,tail.1),
-        (2,1) | (1,2) => (tail.0+1,tail.1+1),
-        (-2,1) | (-1,2) => (tail.0-1,tail.1+1),
-        (1,-2) | (2,-1) => (tail.0+1,tail.1-1),
-        (-1,-2) | (-2,-1) => (tail.0-1,tail.1-1),
-        (2,2) => (tail.0+1,tail.1+1),
-        (2,-2) => (tail.0+1,tail.1-1),
-        (-2,-2) => (tail.0-1,tail.1-1),
-        (-2,2) => (tail.0-1,tail.1+1),
-        (a,b) => panic!("pas possible avec ({},{})",a,b)
+fn calcul_new_tail(head: (i16, i16), tail: &mut (i16, i16)) {
+    if tail.0.abs_diff(head.0) >= 2 || tail.1.abs_diff(head.1) >= 2 {
+        if tail.0 < head.0 { tail.0 += 1;}
+        else if tail.0 > head.0 { tail.0 -= 1; }
+
+        if tail.1 < head.1 { tail.1 += 1;}
+        else if tail.1 > head.1 { tail.1 -= 1; }
     }
 }
 
-fn read_moves(input: &str) -> Vec<(usize, i32)> {
+fn read_moves(input: &str) -> Vec<(usize, i16)> {
     input.lines()
     .map(|l|l.split_once(' ').unwrap())
-    .map(|(d,n)| (d.chars().next().unwrap(), n.parse::<i32>().unwrap()))
+    .map(|(d,n)| (d.chars().next().unwrap(), n.parse::<i16>().unwrap()))
     .map(|(d,n)| (match d {//on map les directions pour que ce soit facile de taper sur les indices de DIR
         'U' => 0,
         'L' => 1,
@@ -80,7 +71,7 @@ fn read_moves(input: &str) -> Vec<(usize, i32)> {
         'R' => 3,
         _ => panic!("hey !")
     },n))
-    .collect::<Vec<(usize,i32)>>()
+    .collect::<Vec<(usize,i16)>>()
 }
 
 #[cfg(test)]

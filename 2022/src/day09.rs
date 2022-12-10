@@ -50,6 +50,7 @@ pub fn part2(input: &str) -> Result<i64, Box<dyn Error>> {
 /**
  * évalue toutes les différentes positions possibles
  */
+#[allow(clippy::comparison_chain)]
 fn calcul_new_tail(head: (i16, i16), tail: &mut (i16, i16)) {
     if tail.0.abs_diff(head.0) >= 2 || tail.1.abs_diff(head.1) >= 2 {
         if tail.0 < head.0 { tail.0 += 1;}

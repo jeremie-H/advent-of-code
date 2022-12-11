@@ -13,9 +13,9 @@ pub fn part1(input: &str) -> Result<i64, Box<dyn Error>> {
     let mut head = (0i16,0i16);
     let mut tail = (0i16,0i16);
 
-    moves.iter().for_each(|(d,n)|{
-        for _ in 0..*n {
-            head = (head.0+DIR[*d].0, head.1+DIR[*d].1);
+    moves.for_each(|(d,n)|{
+        for _ in 0..n {
+            head = (head.0+DIR[d].0, head.1+DIR[d].1);
             calcul_new_tail(head,&mut tail);
             positions.insert(tail);
         }
@@ -34,9 +34,9 @@ pub fn part2(input: &str) -> Result<i64, Box<dyn Error>> {
     positions.insert((0,0));//always at least this position
     let mut alaqueueleuleu = [(0,0);10];
 
-    moves.iter().for_each(|(d,n)|{
-        for _ in 0..*n {
-            alaqueueleuleu[0] = (alaqueueleuleu[0].0+DIR[*d].0, alaqueueleuleu[0].1+DIR[*d].1);
+    moves.for_each(|(d,n)|{
+        for _ in 0..n {
+            alaqueueleuleu[0] = (alaqueueleuleu[0].0+DIR[d].0, alaqueueleuleu[0].1+DIR[d].1);
             for i in 1..alaqueueleuleu.len() {
                 calcul_new_tail(alaqueueleuleu[i-1], &mut alaqueueleuleu[i]);
             }
@@ -61,18 +61,16 @@ fn calcul_new_tail(head: (i16, i16), tail: &mut (i16, i16)) {
     }
 }
 
-fn read_moves(input: &str) -> Vec<(usize, i16)> {
+fn read_moves(input: &str) -> impl Iterator<Item=(usize,i16)> + '_ {
     input.lines()
     .map(|l|l.split_once(' ').unwrap())
-    .map(|(d,n)| (d.chars().next().unwrap(), n.parse::<i16>().unwrap()))
-    .map(|(d,n)| (match d {//on map les directions pour que ce soit facile de taper sur les indices de DIR
+    .map(|(d,n)| (match d.chars().next().unwrap() {//on map les directions pour que ce soit facile de taper sur les indices de DIR
         'U' => 0,
         'L' => 1,
         'D' => 2,
         'R' => 3,
         _ => panic!("hey !")
-    },n))
-    .collect::<Vec<(usize,i16)>>()
+    },n.parse::<i16>().unwrap()))
 }
 
 #[cfg(test)]

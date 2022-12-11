@@ -20,7 +20,7 @@ impl Monkey {
         let items = it.next().unwrap()[18..].split(", ").map(|f|f.parse::<u64>().unwrap()).collect::<Vec<u64>>();
         let operation_line = it.next().unwrap();
         let mut operation = operation_line.as_bytes()[23];
-        if operation_line[25..].eq("old") { operation = b'2';}
+        if operation_line[25..].eq("old") { operation = b'2';}//square
         //if square operation, operation_value will not be used
         let operation_value = operation_line[25..].parse::<u64>().unwrap_or_default();
         let divisible_by = it.next().unwrap()[21..].parse::<u64>().unwrap_or_default();
@@ -35,7 +35,7 @@ impl Monkey {
  */
 pub fn part1(input: &str) -> Result<i64, Box<dyn Error>> {
     let mut monkeys = input.split("\n\n")
-    .map(|bloc| Monkey::from(bloc))
+    .map(Monkey::from)
     .collect::<Vec<Monkey>>();
     let mut inspections = vec![0u64; monkeys.len()];
     
@@ -53,7 +53,7 @@ pub fn part1(input: &str) -> Result<i64, Box<dyn Error>> {
  */
 pub fn part2(input: &str) -> Result<i64, Box<dyn Error>> {
     let mut monkeys = input.split("\n\n")
-    .map(|bloc| Monkey::from(bloc))
+    .map(Monkey::from)
     .collect::<Vec<Monkey>>();
     let mut inspections = vec![0u64; monkeys.len()];
     let all_divisibles: u64 = monkeys.iter().map(|m|m.divisible_by).product();
@@ -62,23 +62,20 @@ pub fn part2(input: &str) -> Result<i64, Box<dyn Error>> {
     monkeys_rounds(&mut monkeys, &mut inspections, 10000, |x| x % all_divisibles);
     
     //display_inspections(&inspections);
-    inspections.sort();
+    inspections.sort_by(|a, b| b.cmp(a));
     
-    Ok(inspections.iter().rev().take(2).product::<u64>() as i64)
+    Ok(inspections.iter().take(2).product::<u64>() as i64)
 }
 
-fn monkeys_rounds(monkeys: &mut Vec<Monkey>, inspections: &mut Vec<u64>, rounds: usize, cloj :impl Fn(u64) -> u64) {
-    // let mut monkey_clone = monkeys.clone();
-    
+fn monkeys_rounds(monkeys: &mut [Monkey], inspections: &mut [u64], rounds: usize, cloj :impl Fn(u64) -> u64) {
     for _ in 0..rounds { // rounds
         for j in 0..monkeys.len() {
-            // std::mem::swap(&mut monkey_clone[j], &mut monkeys[j]);
             let monkey_copy = monkeys[j].clone();
             monkey_copy.items.iter().for_each(|item|{
                 inspections[j] +=1;
                 let worry_level = cloj(match monkeys[j].operation {
-                    b'+' => item + &monkeys[j].operation_value,
-                    b'*' => item * &monkeys[j].operation_value,
+                    b'+' => item + monkeys[j].operation_value,
+                    b'*' => item * monkeys[j].operation_value,
                     b'2' => item * item,
                     e => panic!("unknown op {}",e)
                 });
@@ -88,21 +85,20 @@ fn monkeys_rounds(monkeys: &mut Vec<Monkey>, inspections: &mut Vec<u64>, rounds:
                     monkeys[monkey_copy.div_false].items.push(worry_level);
                 }
                 monkeys[j].items.clear();
-
             })
         }
     }
 }
 
-#[allow(dead_code)]
-fn display_inspections(inspections: &Vec<u64>)  {
+#[allow(dead_code,clippy::needless_range_loop)]
+fn display_inspections(inspections: &[u64])  {
     for i in 0..inspections.len() {
         println!("Monkey {} inspected items {}", i, inspections[i]);
     }
 }
 
 #[allow(dead_code)]
-fn display_monkeys_items(monkeys: &Vec<Monkey>)  {
+fn display_monkeys_items(monkeys: &[Monkey])  {
     monkeys.iter().for_each(|m|{
         println!("Monkey {} : {:?}",m.numero, m.items);
     })

@@ -9,7 +9,7 @@ pub fn part1(input: &str) -> Result<i64, Box<dyn Error>> {
     let input = input.replace("10", "A");
     let result = input.split("\n\n")
     .enumerate()
-    .filter(|(_,pair)|isrightorder(&pair))
+    .filter(|(_,pair)|isrightorder(pair))
     .map(|(i,_)| i as i64 + 1 )
     .sum();
     Ok(result)
@@ -25,12 +25,11 @@ pub fn part2(input: &str) -> Result<i64, Box<dyn Error>> {
     let mut input = input.replace("\n\n", "\n");//trim all blank line
     input.push_str("\n[[2]]");
     input.push_str("\n[[6]]");
-    let mut ordered_signals = input.lines()
-    .collect::<Vec<&str>>();
+    let mut ordered_signals = input.lines().collect::<Vec<&str>>();
     ordered_signals.sort_by(|left,right| compare(left.as_bytes(), right.as_bytes()));
     //println!("tabl {:?}", ordered_signals);
-    let position2 = ordered_signals.iter().position(|l| l.eq(&"[[2]]")).unwrap() as i64 +1;
-    let position6 = ordered_signals.iter().position(|l| l.eq(&"[[6]]")).unwrap() as i64 +1;
+    let position2 = ordered_signals.iter().position(|l| l.eq(&"[[2]]")).unwrap() as i64 + 1;
+    let position6 = ordered_signals.iter().position(|l| l.eq(&"[[6]]")).unwrap() as i64 + 1;
 
     let result = position2*position6;
     Ok(result)
@@ -39,9 +38,7 @@ pub fn part2(input: &str) -> Result<i64, Box<dyn Error>> {
 
 fn isrightorder(pair: &str) -> bool {
     let (left, right) = pair.split_once('\n').unwrap();
-    let result = compare(&left.as_bytes(),&right.as_bytes()) == Ordering::Less;
-    //println!("debug : {:?}, {:?} = {}",  left, right, result);
-    result
+    compare(left.as_bytes(), right.as_bytes()) == Ordering::Less
 }
 
 // retourne Ordering::Less si c'est dans le bon ordre
@@ -55,17 +52,18 @@ fn compare(left: &[u8], right: &[u8]) -> Ordering {
             let l = left[i];
             let r = right[j];
             //on incrémente dès le début, ça nous évite de dupliquer ce code à chaque fois qu'on appelle continue;
+            //et si besoin d'accéder à la valeur de i, ou j, on fait i-1 et j-1
             i += 1;
             j += 1;
 
             //analyse des 2 premiers caractères
             match (l,r) {
                 (b'0'..=b'A', b'0'..=b'A') => {
+                    
                     if l == r {continue;}
-                    else if l < r {return Ordering::Less;}
-                    else {return Ordering::Greater;}
+                    else {return l.cmp(&r); }
                 },
-                
+
                 (b',', b',') => continue,
 
                 (b'[', b'[') => {
@@ -92,8 +90,8 @@ fn compare(left: &[u8], right: &[u8]) -> Ordering {
                 },
 
                 (b'0'..=b'A', b'[') => {
-                    let subright = sub_list(&right[j-1..]);
                     let subleft = [b'[', l, b']'];
+                    let subright = sub_list(&right[j-1..]);
                     let sousresultat = compare(&subleft, subright);
                     if sousresultat == Ordering::Equal {
                         j += subright.len()-1;
@@ -101,7 +99,6 @@ fn compare(left: &[u8], right: &[u8]) -> Ordering {
                     }
                     else {return sousresultat;}
                 },
-
                 _ => panic!("unknow chars")
             }
         }
@@ -134,7 +131,7 @@ fn sub_list(substr: &[u8]) -> &[u8] {
             }
         }
     }
-    &substr
+    substr
 }
 
 

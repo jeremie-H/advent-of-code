@@ -1,4 +1,5 @@
-use std::error::Error;
+use std::{error::Error, thread, time::Duration};
+use colored::*;
 
 /**
  * Part 1
@@ -12,7 +13,37 @@ pub fn part1(input: &str) -> Result<i64, Box<dyn Error>> {
  */
 pub fn part2(input: &str) -> Result<i64, Box<dyn Error>> {
     Ok(pos(input, 14))
+
+    // //solution timvisee très élégante pour garder une trace
+    // let d = input.as_bytes();
+    // let mut w = 0;
+    // 'main: loop {
+    //     let mut seen = 0u32;
+    //     for i in (1..=14).rev() {
+    //         //display_and_reset_screen(input, w, i);
+    //         let mask = 1 << d[w + i] - b'a';
+    //         if seen & mask == mask {
+    //             w += i;
+    //             continue 'main;
+    //         }
+    //         seen |= mask;
+    //     }
+    //     break;
+    // }
+    // Ok((w+15) as i64)
 }
+
+#[allow(dead_code,clippy::needless_range_loop)]
+fn display_and_reset_screen(input: &str, w: usize, i:usize) {
+    println!("\x1b[1J\x1b[A");//clear screeen
+    print!("{}", input[0..w].to_owned());
+    print!("{}", input[w..w+i].bright_purple());
+    print!("{}", input[w+i..=w+14].on_red());
+    print!("{}", input[w+1..].to_owned());
+    println!();
+    thread::sleep(Duration::from_millis(1000));
+}
+
 
 fn pos(input: &str, n: usize) -> i64 {
     (input.as_bytes().windows(n).position(|s| (1..s.len()).all(|i| !s[i..].contains(&s[i - 1]))).unwrap() + n) as i64 

@@ -59,7 +59,6 @@ fn compare(left: &[u8], right: &[u8]) -> Ordering {
             //analyse des 2 premiers caractères
             match (l,r) {
                 (b'0'..=b'A', b'0'..=b'A') => {
-                    
                     if l == r {continue;}
                     else {return l.cmp(&r); }
                 },

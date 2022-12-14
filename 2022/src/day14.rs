@@ -61,7 +61,7 @@ fn falling_sand(map: &mut [Vec<u8>], bottom: usize, with_floor: bool, _range: &R
 
 
 fn load_map(input: &str) -> (Vec<Vec<u8>>, usize) {
-    let mut map = vec![vec![b'.';1000];170];
+    let mut map = vec![vec![b'.';1000];200];//après vérification, on ne dépasse pas ces valeurs
     let max = input.lines()
     .map(|l|draw_rocks(&l.split(" -> ").collect::<Vec<&str>>(), &mut map))
     .max().unwrap();

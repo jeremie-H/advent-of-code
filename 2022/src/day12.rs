@@ -42,6 +42,9 @@ where ClosureSuccess: FnMut(&u8) -> bool
     map[depart.0][depart.1] = 0;//le départ est marqué visité
     let mut chemins = VecDeque::new();
     let mut increment = 0;
+    // on pourrait accélerer le traitement en virant simplement le vec attaché à chaque position
+    // ce vec permet juste de garder la trace du plus court chemin
+    // c'est quand même plus sympa pour dessiner le chemin
     chemins.push_back((b'z', (depart.0, depart.1), vec![(depart.0, depart.1)]));
     while !chemins.is_empty() {
         for _ in 0..chemins.len() {

@@ -1,9 +1,10 @@
 # Advent of code 2023
 
 ## Résultat des benchs
+## Benches results
 | day   |   part 1  |   part 2  | 
 |-------|----------:|----------:|
-| day01 |           |           |
+| day01 |   8.59 μs | 123.48 μs |
 | day02 |           |           |
 | day03 |           |           |
 | day04 |           |           |
@@ -28,4 +29,4 @@
 | day23 |           |           |
 | day24 |           |           |
 | day25 |           |           |
-|**Total**|           |**0.00 ns** |
+|**Total**|           |**132.07 μs** |

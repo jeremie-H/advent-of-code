@@ -1,31 +1,47 @@
-use std::error::Error;
+use std::{error::Error, ops::{RangeBounds, Range}};
+
 
 /**
  * Part 1
  */
 pub fn part1(input: &str) -> Result<i64, Box<dyn Error>> { Ok(somme_des_nombres(input)) }
 
+const CHIFFRES: [&str; 9] = ["one", "two","three","four","five","six","seven","eight","nine"];
+
 /**
  * Part 2
  */
 pub fn part2(input: &str) -> Result<i64, Box<dyn Error>> {
-    let transform = input.lines().fold(String::new(), |mut acc, l| {
-        let l = l
-            .replace("one", "o1e")
-            .replace("two", "t2o")
-            .replace("three", "t3e")
-            .replace("four", "f4r")
-            .replace("five", "f5e")
-            .replace("six", "s6x")
-            .replace("seven", "s7n")
-            .replace("eight", "e8t")
-            .replace("nine", "n9e");
-        acc.push_str(l.as_str());
-        acc.push('\n');
-        acc
-    });
-    Ok(somme_des_nombres(&transform))
+    
+    Ok(input.lines()
+    .map(|line| calculate_line_value(line))
+    .sum::<i64>())
+
 }
+
+fn calculate_line_value(line: &str) -> i64 {
+    let b_ligne = line.as_bytes();
+    let dizaine = calcul_valeur(b_ligne, 0..b_ligne.len());
+    let unité = calcul_valeur(b_ligne, (0..b_ligne.len()).rev());
+    
+    dizaine * 10 + unité
+}
+
+fn calcul_valeur(ligne: &[u8], range: impl Iterator<Item = usize>) -> i64 {
+    for i in range {
+        if ligne[i].is_ascii_digit() {
+            return (ligne[i] - b'0') as i64;
+        }
+        for (num, name) in CHIFFRES.iter().enumerate() {
+            let name_bytes = name.as_bytes();
+            if ligne[i..].starts_with(name_bytes) {
+                return (num + 1) as i64;
+            }
+        }
+    }
+    0
+}
+
 
 fn somme_des_nombres(lines: &str) -> i64 {
     lines.lines().fold(0, |acc, l| {

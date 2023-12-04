@@ -23,3 +23,5 @@ itertools = "0.12.0"
 colored = "2"
 #bench.rs
 took = "0.1"
+
+atoi = "2.0"

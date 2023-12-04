@@ -10,7 +10,7 @@ struct Nombre {
     stillparsing: bool,
 }
 
-#[derive(Debug, PartialEq, Eq, Clone)]
+#[derive(Debug, Clone)]
 struct Gear {
     line: usize,
     position: usize,

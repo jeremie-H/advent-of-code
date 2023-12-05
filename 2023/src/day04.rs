@@ -5,12 +5,12 @@ use std::{error::Error, collections::HashSet, ops::Div};
  */
 pub fn part1(input: &str) -> Result<i64, Box<dyn Error>> {
     Ok(input.lines().map(|line| {
-        let (card, game) = line.split_once(": ").unwrap();
-        worth(card, game)
+        let (_card, game) = line.split_once(": ").unwrap();
+        worth(game)
     }).sum::<i64>())
 }
 
-fn worth(card: &str, game: &str) -> i64 {
+fn worth(game: &str) -> i64 {
     let (winnings, game) = game.split_once(" | ").unwrap();
     let winnings = winnings.split(" ").filter(|c| !c.is_empty()).map(|w| w.trim().parse::<i64>().unwrap()).collect::<HashSet<i64>>();
     // println!("winnings {:?}", winnings);

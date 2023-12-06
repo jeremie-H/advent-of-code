@@ -16,7 +16,7 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        assert_eq!(part1("").unwrap(), 0);
+        assert_eq!(part1("Time:      7  15   30\nDistance:  9  40  200").unwrap(), 288);
     }
 
     #[test]

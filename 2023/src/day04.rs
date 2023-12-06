@@ -13,11 +13,7 @@ pub fn part1(input: &str) -> Result<i64, Box<dyn Error>> {
 fn worth(game: &str) -> i64 {
     let (winnings, game) = game.split_once(" | ").unwrap();
     let winnings = winnings.split(" ").filter(|c| !c.is_empty()).map(|w| w.trim().parse::<i64>().unwrap()).collect::<HashSet<i64>>();
-    // println!("winnings {:?}", winnings);
     let game = game.split(" ").filter(|c| !c.is_empty()).map(|w| w.trim().parse::<i64>().unwrap()).collect::<HashSet<i64>>();
-    // println!("game : {:?}", game);
-
-    // println!("intersection : {:?}", game.intersection(&winnings));
     (2  as i64).pow(game.intersection(&winnings).count() as u32).div(2)
 }
 
@@ -25,28 +21,33 @@ fn worth(game: &str) -> i64 {
  * Part 2
  */
 pub fn part2(input: &str) -> Result<i64, Box<dyn Error>> {
-    Ok(input.lines().fold((vec![1i64;256], 0), |(mut states, somme), line| {
-        let (card, game) = line.split_once(": ").unwrap();
-        let card = card.split_once(" ").unwrap().1.trim().parse::<i64>().unwrap();
-        let (winnings, game) = game.split_once(" | ").unwrap();
+    let (_, total_sum) = input.lines().try_fold((vec![1i64; 256], 0), |(mut states, sum), line| -> Result<_, Box<dyn Error>> {
+        let (card, game) = line.split_once(":").ok_or("Invalid input format")?;
+        let card = card.split_once(" ").ok_or("Invalid card format").map(|(_, val)| val.trim().parse::<i64>())??;
+        let (winnings, game) = game.split_once(" | ").ok_or("Invalid game format")?;
 
-        let winnings = winnings.split(" ").filter(|c| !c.is_empty()).map(|w| w.trim().parse::<i64>().unwrap()).collect::<HashSet<i64>>();
-        // println!("winnings {:?}", winnings);
-        let game = game.split(" ").filter(|c| !c.is_empty()).map(|w| w.trim().parse::<i64>().unwrap()).collect::<HashSet<i64>>();
-        // println!("game : {:?}", game);
+        let winnings = winnings
+            .split_whitespace()
+            .filter(|c| !c.is_empty())
+            .map(|w| w.trim().parse::<i64>())
+            .collect::<Result<HashSet<i64>, _>>()?;
+        let game = game
+            .split_whitespace()
+            .filter(|c| !c.is_empty())
+            .map(|w| w.trim().parse::<i64>())
+            .collect::<Result<HashSet<i64>, _>>()?;
+
         let inter = game.intersection(&winnings).count();
         for i in 1..=inter {
-            states[card as usize+i] += states[card as usize];
-        };
-        //println!("card : {:?}, intersection : {:?}, worth : {:?}, state[i]: {:?}", card, game.intersection(&winnings), worth, states[card as usize]);
-        let s = states[card as usize];
-        (states, somme + s )
-    }).1)
-}
+            states[card as usize + i] += states[card as usize];
+        }
 
-// fn worth_with_states(card: i64, game: &str, states: &mut [i64]) -> i64 {
-    
-// }
+        let s = states[card as usize];
+        Ok((states, sum + s))
+    })?;
+
+    Ok(total_sum)
+}
 
 #[cfg(test)]
 mod tests {

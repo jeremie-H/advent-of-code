@@ -38,8 +38,6 @@ pub fn part2(input: &str) -> Result<i64, Box<dyn Error>> {
         for i in 1..=inter {
             states[card as usize+i] += states[card as usize];
         };
-        
-        let worth = (2  as i64).pow(inter as u32).div(2);
         //println!("card : {:?}, intersection : {:?}, worth : {:?}, state[i]: {:?}", card, game.intersection(&winnings), worth, states[card as usize]);
         let s = states[card as usize];
         (states, somme + s )

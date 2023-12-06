@@ -6,21 +6,28 @@ use std::error::Error;
 pub fn part1(input: &str) -> Result<i64, Box<dyn Error>> {
     let input = input.split_once("\n").unwrap();
     let races = input.0.split_whitespace().into_iter()
-    .filter_map(|s| s.parse::<i64>().ok())
-    .zip(input.1.split_whitespace().into_iter().filter_map(|s| s.parse::<i64>().ok()))
-    .collect::<Vec<(i64,i64)>>();
+    .filter_map(|s| s.parse::<f64>().ok())
+    .zip(input.1.split_whitespace().into_iter().filter_map(|s| s.parse::<f64>().ok()))
+    .collect::<Vec<(f64,f64)>>();
     
-    let winning_ways: i64 = races.iter().map(|&(time, distance)| {
-        let mut winning_way = 0;
-        for t in 1..time {
-            if  (time-t)*t > distance {
-                winning_way += 1;
-            }
-        }
-        winning_way
+    let winning_ways: f64 = races.iter().map(|&(time, distance)| {
+        calcul_winning_way(time, distance)
     }).product();
 
-    Ok(winning_ways)
+    Ok(winning_ways as i64)
+}
+
+
+fn calcul_winning_way(time: f64, distance: f64) -> f64 {
+    let racine_carre = (time * time - 4.0 * distance).sqrt();
+    let x1 = (time - racine_carre) / 2.0;
+    let x2 = (time + racine_carre) / 2.0;
+
+    let mut ways_to_win = x2.floor() - x1.floor();
+    if x2.floor() == x2 {
+        ways_to_win -= 1.0
+    }
+    ways_to_win
 }
 
 /**
@@ -28,18 +35,12 @@ pub fn part1(input: &str) -> Result<i64, Box<dyn Error>> {
  */
 pub fn part2(input: &str) -> Result<i64, Box<dyn Error>> {
     let input = input.split_once("\n").unwrap();
-    let time = input.0.split_once(":").unwrap().1.replace(" ", "").parse::<i64>().unwrap();
-    let distance = input.1.split_once(":").unwrap().1.replace(" ", "").parse::<i64>().unwrap();
-    
-    let mut winning_way: i64 = 0;
-    for t in 1..time {
-        if  (time-t)*t > distance {
-            winning_way += 1;
-        }
-    }
-    
-    Ok(winning_way)
+    let time = input.0.split_once(":").unwrap().1.replace(" ", "").parse::<f64>().unwrap();
+    let distance = input.1.split_once(":").unwrap().1.replace(" ", "").parse::<f64>().unwrap();
+    let winning_way = calcul_winning_way(time, distance);
+    Ok(winning_way as i64)
 }
+
 
 #[cfg(test)]
 mod tests {

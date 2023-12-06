@@ -2,7 +2,7 @@ use std::{error::Error, cmp::Ordering};
 
 use itertools::Itertools;
 
-const MILIEUX: [&str; 7] = ["soil", "fertilizer", "water", "light", "temperature", "humidity", "location"];
+//const MILIEUX: [&str; 7] = ["soil", "fertilizer", "water", "light", "temperature", "humidity", "location"];
 
 /**
  * Load les data
@@ -121,65 +121,45 @@ pub fn part2(input: &str) -> Result<i64, Box<dyn Error>> {
         //println!("Range {:?}", r);
         r
     }).collect::<Vec<Range>>();
-    let mut gros_tableaux_des_ranges: Vec<Range> = Vec::new();
     let mut transform_avant_element: Vec<Range> = Vec::new();
     let mut transform_après_element: Vec<Range> = Vec::new();
     let mut transform_encours: Vec<Range> = Vec::new();
     let mut transform_encours2: Vec<Range> = Vec::new();
 
-    //for seed_range in seeds_ranges {
-        let mut elemnt_i = 0;
-       
-        transform_avant_element.append(&mut seeds_ranges);
+    // let mut elemnt_i = 0;
+    
+    transform_avant_element.append(&mut seeds_ranges);
 
-        for element in &elements {
-            
-            
+    for element in &elements {
+        
+        for elt in &transform_avant_element {
+            transform_encours.clear();
+            transform_encours.push(*elt);
 
-            for elt in &transform_avant_element {
-                transform_encours.clear();
-                transform_encours.push(*elt);
-                let mut une_inter = false;
-                for ligne in element {
-                    transform_encours2.clear();
-                    for tr_encours in &transform_encours {
+            for ligne in element {
+                transform_encours2.clear();
+                
+                for tr_encours in &transform_encours {
 
-                        let (inter, mut reste) = tr_encours.intersection(&Range{min: ligne[1], max: ligne[1]+ligne[2], origin: ligne[0]});
-                        //println!("intersection {:?} avec {:?} : {:?}, reste : {:?}", tr_encours, ligne, inter, reste);
-                        if let Some(r) = inter {
-                            une_inter = true;
-                            transform_après_element.push(r);
-                            transform_encours2.append(&mut reste);
-                        }
-                        else {
-                            transform_encours2.push(*tr_encours);
-                        }
+                    let (inter, mut reste) = tr_encours.intersection(&Range{min: ligne[1], max: ligne[1]+ligne[2], origin: ligne[0]});
+                    //println!("intersection {:?} avec {:?} : {:?}, reste : {:?}", tr_encours, ligne, inter, reste);
+                    if let Some(r) = inter {
+                        transform_après_element.push(r);
+                        transform_encours2.append(&mut reste);
                     }
-                    transform_encours.clear();
-                    transform_encours.append(& mut transform_encours2);
+                    else {
+                        transform_encours2.push(*tr_encours);
+                    }
                 }
-                transform_après_element.append(&mut transform_encours);
-                 
-                //println!("transform_encours : {:?}", transform_encours);
-
-                // while !transform_encours.is_empty() {
-                //     let elt = transform_encours.pop().unwrap();
-                //         for ligne in element {
-                //         let (inter, reste) = elt.intersection(&Range{min: ligne[1], max: ligne[1]+ligne[2], origin: ligne[0]});
-                //         if let Some(r) = inter {
-                //             transform_après_element.push(r);
-                //         }
-                //     }
-                // }
-                // transform_après_element.append(&mut transform_encours);
-                // println!("fin element : {:?}", transform_après_element);
+                transform_encours.clear();
+                transform_encours.append(& mut transform_encours2);
             }
-
-            elemnt_i += 1;
-            transform_avant_element.clear();
-            transform_avant_element.append(&mut transform_après_element);
-            //println!("transform_avant_element {:?}", transform_avant_element);
-      //  }
+            transform_après_element.append(&mut transform_encours);
+                
+        }
+        transform_avant_element.clear();
+        transform_avant_element.append(&mut transform_après_element);
+        //println!("transform_avant_element {:?}", transform_avant_element);
     }
     
 

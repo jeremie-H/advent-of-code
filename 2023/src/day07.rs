@@ -2,7 +2,7 @@ use std::{error::Error, cmp::Ordering};
 
 use itertools::Itertools;
 
-#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Clone)]
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 enum Strength {
     Rien = 0,
     Paire = 1,
@@ -13,7 +13,7 @@ enum Strength {
     Five = 6
 }
 
-#[derive(Debug, Clone, PartialEq, Eq, Ord)]
+#[derive(Debug, PartialEq, Eq, Ord)]
 struct Hand {
     game: Vec<u8>,
     bid: i64,
@@ -44,13 +44,13 @@ impl Hand{
         allcards.sort_by(|a, b| b.cmp(a));
         allcards[0] += nombre_de_joker;
 
-        let strength = match allcards[0] {
-            5 => Strength::Five,
-            4 => Strength::Carré,
-            3 if allcards[1] == 2 => Strength::Full,
-            3 if allcards[1] < 2 => Strength::Brelan,
-            2 if allcards[1] == 2 => Strength::DoublePaire,
-            2 if allcards[1] < 2 => Strength::Paire,
+        let strength = match allcards {
+            [5, ..] => Strength::Five,
+            [4, ..] => Strength::Carré,
+            [3,2, ..] => Strength::Full,
+            [3, ..] => Strength::Brelan,
+            [2,2, ..] => Strength::DoublePaire,
+            [2, ..] => Strength::Paire,
             _ => Strength::Rien
         };
         Hand { game: gamecopy, bid, strength }
@@ -129,6 +129,6 @@ QQQJA 483";
     fn real_tests() {
         // avec les vraies données
         assert_eq!(part1(include_str!("../inputs/input07.txt")).unwrap(), 248453531);
-        assert_eq!(part2(include_str!("../inputs/input07.txt")).unwrap(), 248781813);//249101958 & 249050660
+        assert_eq!(part2(include_str!("../inputs/input07.txt")).unwrap(), 248781813);
     }
 }

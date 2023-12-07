@@ -1,4 +1,4 @@
-use std::{error::Error, cmp::{Ordering::*, Ordering}};
+use std::{error::Error, cmp::Ordering};
 
 use itertools::Itertools;
 
@@ -21,23 +21,29 @@ struct Hand {
 }
 
 impl Hand{
-    fn new(game: &[u8], bid: i64) -> Hand {
+    fn new(game: &[u8], bid: i64, part2: bool) -> Hand {
         let mut allcards = [0u8; 15];
         let mut gamecopy: Vec<u8> = Vec::new();
-        //let mut gamecopy: [u8;5] = [0;5];
+        let mut nombre_de_joker = 0;
         for i in 0..5 {
             let card: usize = match game[i] {
                 b'A' => 14,
                 b'K' => 13,
                 b'Q' => 12,
-                b'J' => 11,
+                b'J' => {
+                    if part2 { nombre_de_joker += 1; 1 }
+                    else { 11 }
+                },
                 b'T' => 10,
                 chiffre => (chiffre - b'0') as usize,
             };
             gamecopy.push(card as u8);
             allcards[card] += 1;
         }
+        allcards[1] = 0;
         allcards.sort_by(|a, b| b.cmp(a));
+        allcards[0] += nombre_de_joker;
+
         let strength = match allcards[0] {
             5 => Strength::Five,
             4 => Strength::Carré,
@@ -49,7 +55,6 @@ impl Hand{
         };
         Hand { game: gamecopy, bid, strength }
     }
-    
 }
 
 impl PartialOrd for Hand {
@@ -77,7 +82,7 @@ impl PartialOrd for Hand {
 pub fn part1(input: &str) -> Result<i64, Box<dyn Error>> {
     Ok(input.lines()
     .map(|s| s.split_once(" ").unwrap())
-    .map(|(a,b)| Hand::new( a.as_bytes(), b.parse::<i64>().unwrap()))
+    .map(|(a,b)| Hand::new( a.as_bytes(), b.parse::<i64>().unwrap(), false))
     .sorted()
     .enumerate()
     //.inspect(|(i,h)| println!("i:{},h:{:?}",i+1,h))
@@ -88,7 +93,16 @@ pub fn part1(input: &str) -> Result<i64, Box<dyn Error>> {
 /**
  * Part 2
  */
-pub fn part2(_input: &str) -> Result<i64, Box<dyn Error>> { Ok(0) }
+pub fn part2(input: &str) -> Result<i64, Box<dyn Error>> {
+    Ok(input.lines()
+    .map(|s| s.split_once(" ").unwrap())
+    .map(|(a,b)| Hand::new( a.as_bytes(), b.parse::<i64>().unwrap(), true))
+    .sorted()
+    .enumerate()
+    // .inspect(|(i,h)| println!("i:{},h:{:?}",i+1,h))
+    .map(|(i, hand)| (i as i64+1)*hand.bid as i64)
+    .sum())
+}
 
 #[cfg(test)]
 mod tests {
@@ -108,13 +122,13 @@ QQQJA 483";
 
     #[test]
     fn test_part2() {
-        assert_eq!(part2(&ÉNONCÉ).unwrap(), 0);
+        assert_eq!(part2(&ÉNONCÉ).unwrap(), 5905);
     }
 
     #[test]
     fn real_tests() {
         // avec les vraies données
         assert_eq!(part1(include_str!("../inputs/input07.txt")).unwrap(), 248453531);
-        // assert_eq!(part2(include_str!("../inputs/input07.txt")).unwrap(), 0);
+        assert_eq!(part2(include_str!("../inputs/input07.txt")).unwrap(), 248781813);//249101958 & 249050660
     }
 }

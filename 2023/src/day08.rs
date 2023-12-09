@@ -13,28 +13,31 @@ fn load_data(input: &str) -> (&str, HashMap<&str, (&str,&str)>) {
     (directions, map)
 }
 
-/**
- * Part 1
- */
-pub fn part1(input: &str) -> Result<i64, Box<dyn Error>> {
-    let (directions, map) = load_data(input);
-    let r = directions.chars()
+fn calcul_nombre_cycles(directions: &str, start: &str, map: &HashMap<&str, (&str, &str)>) -> i64 {
+    let result = directions.chars()
     .cycle()
-    .fold_while((1, "AAA"), |(i, mut branche), direction| {
+    .fold_while((1, start), |(i, mut branche), direction| {
         branche = match direction {
             'R' => map.get(branche).unwrap().1,
             'L' => map.get(branche).unwrap().0,
             _ => panic!("direction inconnue")
         };
-        if branche.eq("ZZZ") {
+        if branche.as_bytes()[2] == b'Z' {
             Done((i, branche))
         }
         else {
             Continue((i + 1, branche))
         }
     }).into_inner().0;
-    // println!("map : {:?}", map);
-    // println!("r : {:?}", r);
+    result
+}
+
+/**
+ * Part 1
+ */
+pub fn part1(input: &str) -> Result<i64, Box<dyn Error>> {
+    let (directions, map) = load_data(input);
+    let r = calcul_nombre_cycles(directions, "AAA", &map);
     Ok(r as i64)
 }
 
@@ -44,41 +47,25 @@ pub fn part1(input: &str) -> Result<i64, Box<dyn Error>> {
 pub fn part2(input: &str) -> Result<i64, Box<dyn Error>> {
     let (directions, map) = load_data(input);
     let debuts = map.keys().filter(|s|s.as_bytes()[2] == b'A').collect_vec();
-    let r = directions.chars()
-    .cycle()
-    .fold_while((1, debuts), |(i, mut tableau), direction| {
-        let mut fin = true;
-        println!("tab : {:?}", tableau);
-        fin = match direction {
-            'R' => {
-                for i in 0..tableau.len() {
-                    
-                    tableau[i] = &map.get(tableau[i]).unwrap().1;
-                    fin &= tableau[i].as_bytes()[2] == b'Z';
-                    
-                }
-                fin
-            },
-            'L' => {
-                for i in 0..tableau.len() {
-                    
-                    tableau[i] = &map.get(tableau[i]).unwrap().0;
-                    fin &= tableau[i].as_bytes()[2] == b'Z';
-                }
-                fin
-            }
-            _ => panic!("direction inconnue")
-        };
-        if fin {
-            Done((i, tableau))
+    let liste_des_fins = debuts.iter().map(|d| calcul_nombre_cycles(directions, d, &map)).collect::<Vec<i64>>();
+    Ok( liste_des_fins.iter().fold(1, |acc, &unefin| ppcm(acc, unefin) ))
+}
+
+fn ppcm(n1: i64, n2: i64) -> i64 {
+    n1 * n2 / pgcd(n1, n2)
+}
+
+fn pgcd(n1: i64, n2: i64) -> i64 {
+    let mut max = n1.max(n2);
+    let mut min = n1.min(n2);
+    loop {
+        let res = max % min;
+        if res == 0 {
+            return min;
         }
-        else {
-            Continue((i + 1, tableau))
-        }
-    }).into_inner().0;
-    // println!("map : {:?}", map);
-    // println!("r : {:?}", r);
-    Ok(r as i64)
+        max = min;
+        min = res;
+    }
 }
 
 #[cfg(test)]
@@ -121,6 +108,6 @@ XXX = (XXX, XXX)").unwrap(), 6);
     fn real_tests() {
         // avec les vraies données
         assert_eq!(part1(include_str!("../inputs/input08.txt")).unwrap(), 21883);
-        // assert_eq!(part2(include_str!("../inputs/input08.txt")).unwrap(), 0);
+        assert_eq!(part2(include_str!("../inputs/input08.txt")).unwrap(), 12_833_235_391_111);
     }
 }

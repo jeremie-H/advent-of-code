@@ -5,7 +5,7 @@ use std::error::Error;
 #[allow(unused_must_use)]
 fn main() {
     println!("{}", "🎄🎄🎄🎄🎄🎄🎄🎄🎄🎄🎄🎄🎄🎄".to_string().on_black().bold());
-    println!("{}", format!("🎄 Advent of Code {} 🎅 🎄", 2016).on_black().bold());
+    println!("{}", format!("🎄 Advent of Code {} 🎅 🎄", 2024).on_black().bold());
     println!("{}", "🎄🎄🎄🎄🎄🎄🎄🎄🎄🎄🎄🎄🎄🎄".to_string().on_black().bold());
     println!();
 

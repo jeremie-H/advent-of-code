@@ -1,10 +1,9 @@
-# Advent of code 2016
+# Advent of code 2024
 
-## Résultat des benchs
 ## Benches results
 | day   |   part 1  |   part 2  | 
 |-------|----------:|----------:|
-| day01 |   8.59 μs | 123.48 μs |
+| day01 |           |           |
 | day02 |           |           |
 | day03 |           |           |
 | day04 |           |           |
@@ -29,4 +28,4 @@
 | day23 |           |           |
 | day24 |           |           |
 | day25 |           |           |
-|**Total**|           |**132.07 μs** |
+|**Total**|           |**0.00 ns** |

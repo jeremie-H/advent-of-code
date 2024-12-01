@@ -19,17 +19,15 @@ pub fn part1(input: &str) -> Result<i64, Box<dyn Error>> {
  * Part 2
  */
 pub fn part2(input: &str) -> Result<i64, Box<dyn Error>> {
-    let (gauche, droite): (Vec<_>, Vec<_>) = input
+    let (gauche, droite): (Vec<i64>, Vec<i64>) = input
         .lines()
-        .map(|line| {
-            let (a, b) = line.split_once("   ").unwrap();
-            (a.parse::<i64>().unwrap(), b.parse::<i64>().unwrap())
-        })
+        .map(|line| line.split_once("   ").unwrap())
+        .map(|(a, b)| (a.parse::<i64>().unwrap(), b.parse::<i64>().unwrap()))
         .unzip();
 
-    let counts = droite.iter().copied().counts();
+    let counts = droite.iter().counts();
 
-    Ok(gauche.into_iter().map(|a| a * *counts.get(&a).unwrap_or(&0) as i64).sum())
+    Ok(gauche.iter().map(|a| a * *counts.get(&a).unwrap_or(&0) as i64).sum())
 }
 
 #[cfg(test)]

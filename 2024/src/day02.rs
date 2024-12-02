@@ -18,14 +18,21 @@ pub fn part2(_input: &str) -> Result<i64, Box<dyn Error>> {
 mod tests {
     use super::*;
 
+    const ÉNONCÉ: &str = "7 6 4 2 1
+1 2 7 8 9
+9 7 6 2 1
+1 3 2 4 5
+8 6 4 4 1
+1 3 6 7 9";
+
     #[test]
     fn test_part1() {
-        assert_eq!(part1("").unwrap(), 0);
+        assert_eq!(part1(ÉNONCÉ).unwrap(), 0);
     }
 
     #[test]
     fn test_part2() {
-        assert_eq!(part2("").unwrap(), 0);
+        assert_eq!(part2(ÉNONCÉ).unwrap(), 0);
     }
 
     #[test]
